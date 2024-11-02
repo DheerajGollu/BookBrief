@@ -1,12 +1,13 @@
 const express = require('express'); //import express
 const app = express(); //create an express app
-const cors = require('cors'); //import cors
+const cors = require('cors'); //to get requests from front end
 
 const corsOptions = { //5173 is local host where vite is running
     origin: ['http://localhost:5173'],
 }
 
-app.get('/', (req, res) => { //how the server handle "/"
+app.use(cors(corsOptions));
+app.get('/', (req, res) => { 
     res.send('Its coding time baby!');
 });
 
