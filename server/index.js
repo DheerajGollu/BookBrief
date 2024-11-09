@@ -6,10 +6,20 @@ const corsOptions = { //5173 is local host where vite is running
     origin: ['http://localhost:5173'],
 }
 
+app.use(express.json()); // just use json for testing rn
+
 app.use(cors(corsOptions));
+
 app.get('/', (req, res) => { 
-    res.send('Its coding time baby!');
+    res.send('Its coding time baby!'); 
 });
+
+app.post('/book', (req, res) => { 
+    const { bookName } = req.body;
+    console.log(`Received book name: ${bookName}`);
+    res.json({ message: 'Book name received: ${bookName}'}); // send back a response for front end
+});
+
 
 app.listen(8080, () => {
     console.log('Server is running at http://localhost:8080');
