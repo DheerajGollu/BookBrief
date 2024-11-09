@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/app.css';
 
-import {  useState } from 'react'
-import axios from 'axios' //to send requests to server
-import '../styles/app.css'
 function App() {
     const [searchQuery, setSearchQuery] = useState('');
     const [books, setBooks] = useState([]);
@@ -48,26 +45,6 @@ function App() {
     }
   } 
 
-
-    return (
-        <div className='app'>
-            <h1>Welcome to Book Brief!</h1>
-            <input
-                type="text"
-                placeholder="Search for a book..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {loading && <p>Loading...</p>}
-            <ul>
-                {books.map((book) => (
-                    <li key={book.key}>
-                        <strong>{book.title}</strong> by {book.author_name ? book.author_name.join(', ') : 'Unknown Author'}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
   return (
     <div className='app'>
     <h1>Welcome to Book Brief!</h1>
