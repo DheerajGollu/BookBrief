@@ -56,10 +56,9 @@ const HomePage = () => {
             title: book.title,
             author: book.authors ? book.authors.map(author => author.name).join(', ') : 'Unknown Author',
         };
-
         try {
           const response = await axios.post('/book', bookData);
-          console.log('Book data sent successfully:', response.data);
+          console.log('Book data sent successfully!', response.data);
         } catch (error) {
             console.error('Error sending book data:', error);
         }
