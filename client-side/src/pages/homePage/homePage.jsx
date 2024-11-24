@@ -43,7 +43,7 @@ const HomePage = () => {
         }, 5 ); // Debounce API call by 5ms
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]);
+    }, [searchQuery]); //this executes when searchQuery(input) changes
 
     useEffect(() => {
         fetchDiscoveryQueue(); // Fetch discovery queue on component mount
@@ -53,16 +53,21 @@ const HomePage = () => {
         setSearchQuery(event.target.value);
     };
 
-    const fetchData = async () => {
-        if (!searchQuery) return; // Prevent empty submissions
 
+    const handleBookClick = async (book) => {
+        const bookData = {
+          title: book.title,
+          author: book.authors ? book.authors.map(author => author.name).join(', ') : 'Unknown Author',
+        };
+    
         try {
-            const response = await axios.post('/book', { searchQuery });
-            console.log(response.data); // Log data for testing purposes
+          const response = await axios.post('/book', bookData);
+          console.log('Book data sent successfully:', response.data);
         } catch (error) {
-            console.error('Error fetching data:', error);
+          console.error('Error sending book data:', error);
         }
-    };
+      };
+
 
     return (
         <div className='app'>
@@ -81,12 +86,11 @@ const HomePage = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={fetchData} disabled={loading}>Submit</button>
 
             <h2>Discovery Queue</h2>
             <div className="discovery-queue">
                 {discoveryQueue.map((book) => (
-                    <div key={book.key} className="discovery-book">
+                    <div key={book.key} className="discovery-book" onClick={() => handleBookClick(book)}>
                         {book.cover_id ? (
                             <img
                                 src={`https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`}
@@ -98,7 +102,7 @@ const HomePage = () => {
                         )}
                         <div className="book-info">
                             <strong>{book.title}</strong>
-                            {/* <p>{book.authors ? book.authors.map(author => author.name).join(', ') : 'Unknown Author'}</p> */}
+
                         </div>
                     </div>
                 ))}

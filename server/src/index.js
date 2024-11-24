@@ -15,9 +15,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/book', (req, res) => { 
-    const {  searchQuery } = req.body;
-    console.log(`Received book name: ${ searchQuery}`);
-    res.send(`Received book name: ${ searchQuery}`); // send back a response for front end
+    const {  title, author } = req.body;
+    // console.log(`Received book name: ${ searchQuery}`);
+    console.log('Received book data:', title, author);
+    res.send(`Received book data: ${title}, ${author}`); // send back a response for front end
 });
 
 
