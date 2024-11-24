@@ -38,14 +38,6 @@ const HomePage = () => {
     };
 
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            fetchBooks(searchQuery);
-        }, 5 ); // Debounce API call by 5ms
-
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]); //this executes when searchQuery(input) changes
-
-    useEffect(() => {
         fetchDiscoveryQueue(); // Fetch discovery queue on component mount
     }, []);
 
@@ -53,18 +45,25 @@ const HomePage = () => {
         setSearchQuery(event.target.value);
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            fetchBooks(searchQuery); // Trigger search when Enter is pressed
+        }
+    };
 
     const handleBookClick = async (book) => {
-        const bookTitle = book.title;
-    
+        const bookData = {
+            title: book.title,
+            author: book.authors ? book.authors.map(author => author.name).join(', ') : 'Unknown Author',
+        };
+
         try {
-          const response = await axios.post('/book', { bookTitle });
+          const response = await axios.post('/book', bookData);
           console.log('Book data sent successfully:', response.data);
         } catch (error) {
-          console.error('Error sending book data:', error);
+            console.error('Error sending book data:', error);
         }
-      };
-
+    };
 
     return (
         <div className='app'>
@@ -74,6 +73,7 @@ const HomePage = () => {
                 placeholder="Search for a book..."
                 value={searchQuery}
                 onChange={handleInput}
+                onKeyDown={handleKeyDown} // Add event listener for Enter key
             />
             {loading && <p>Loading...</p>}
             <ul>
@@ -99,14 +99,12 @@ const HomePage = () => {
                         )}
                         <div className="book-info">
                             <strong>{book.title}</strong>
-
                         </div>
                     </div>
                 ))}
             </div>
         </div>
     );
-    
-}
+};
 
 export default HomePage;
