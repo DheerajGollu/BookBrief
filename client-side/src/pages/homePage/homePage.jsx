@@ -55,13 +55,10 @@ const HomePage = () => {
 
 
     const handleBookClick = async (book) => {
-        const bookData = {
-          title: book.title,
-          author: book.authors ? book.authors.map(author => author.name).join(', ') : 'Unknown Author',
-        };
+        const bookTitle = book.title;
     
         try {
-          const response = await axios.post('/book', bookData);
+          const response = await axios.post('/book', { bookTitle });
           console.log('Book data sent successfully:', response.data);
         } catch (error) {
           console.error('Error sending book data:', error);
