@@ -3,43 +3,45 @@ import axios from 'axios';
 import './homePage.css';
 
 const HomePage = () => {
-
     const [searchQuery, setSearchQuery] = useState('');
-    // const [books, setBooks] = useState([]);
-    const [discoveryQueue, setDiscoveryQueue] = useState([]);
+    const [searchResults, setSearchResults] = useState([]); // For displaying search results
+    const [discoveryQueue, setDiscoveryQueue] = useState([]); // Discovery queue with random books
     const [loading, setLoading] = useState(false);
 
-    // Fetch search results based on query
-    // const fetchBooks = async (query) => {
-    //     if (!query) {
-    //         setBooks([]);
-    //         return;
-    //     }
+    const GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
 
-    //     setLoading(true);
-    //     try {
-    //         const response = await axios.get(`https://openlibrary.org/search.json?q=${query}`);
-    //         setBooks(response.data.docs.slice(0, 10)); // Limit results to the first 10 books
-    //     } catch (error) {
-    //         console.error("Error fetching data:", error);
-    //         setBooks([]);
-    //     }
-    //     setLoading(false);
-    // };
+    // Fetch search results based on the query
+    const fetchSearchResults = async (query) => {
+        if (!query) {
+            setSearchResults([]); // Clear search results if query is empty
+            return;
+        }
 
-    // Fetch discovery queue for initial book suggestions
-    const fetchDiscoveryQueue = async (query) => {
+        setLoading(true);
         try {
-            const response = await axios.get(`https://openlibrary.org/search.json?q=${query}`);
-            setDiscoveryQueue(response.data.docs.slice(0, 10));  //limit to 10 books only
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=10`);
+            setSearchResults(response.data.items || []); // Set search results
+        } catch (error) {
+            console.error("Error fetching search results:", error);
+        } finally {
             setLoading(false);
+        }
+    };
+
+    // Fetch discovery queue with random books
+    const fetchDiscoveryQueue = async () => {
+        try {
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=subject:fiction&maxResults=40`);
+            const shuffledBooks = response.data.items?.sort(() => 0.5 - Math.random()) || []; // Shuffle books
+            setDiscoveryQueue(shuffledBooks.slice(0, 10)); // Pick the first 10 random books
         } catch (error) {
             console.error("Error fetching discovery queue:", error);
         }
     };
 
+    // Fetch discovery queue on component mount
     useEffect(() => {
-        fetchDiscoveryQueue(''); // Fetch discovery queue on component mount
+        fetchDiscoveryQueue();
     }, []);
 
     const handleInput = (event) => {
@@ -48,26 +50,43 @@ const HomePage = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            fetchDiscoveryQueue(searchQuery); //search when enter is pressed and display the discovery queue
-            setLoading(true);
+            fetchSearchResults(searchQuery); // Fetch search results when Enter is pressed
         }
     };
 
     const handleBookClick = async (book) => {
         const bookData = {
-            title: book.title,
-            author: book.author_name ? book.author_name.join(', ') : 'Unknown Author',
+            title: book.volumeInfo.title,
+            author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
         };
         try {
-          const response = await axios.post('/book', bookData);
-          console.log('Book data sent successfully!', response.data);
+            const response = await axios.post('/book', bookData);
+            console.log('Book data sent successfully!', response.data);
         } catch (error) {
             console.error('Error sending book data:', error);
         }
     };
 
+    const renderBookCard = (book) => (
+        <div key={book.id} className="book-card" onClick={() => handleBookClick(book)}>
+            {book.volumeInfo.imageLinks?.thumbnail ? (
+                <img
+                    src={book.volumeInfo.imageLinks.thumbnail}
+                    alt={`${book.volumeInfo.title} cover`}
+                    className="book-cover"
+                />
+            ) : (
+                <div className="no-cover">No Cover Available</div>
+            )}
+            <div className="book-info">
+                <strong>{book.volumeInfo.title}</strong>
+                <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author'}</p>
+            </div>
+        </div>
+    );
+
     return (
-        <div className='app'>
+        <div className="app">
             <h1>Welcome to Book Brief!</h1>
             <input
                 type="text"
@@ -78,30 +97,20 @@ const HomePage = () => {
             />
             {loading && <p>Loading...</p>}
 
-            <h2>Discovery Queue</h2>
-            <div className="discovery-queue" >
-        {discoveryQueue.map((book) => (
-          <div key={book.key} className="discovery-book" onClick={() => handleBookClick(book)}>
-            {/* setLoading(false); */}
-            {book.cover_i ? (
-              <img
-                src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
-                alt={`${book.title} cover`}
-                className="book-cover"
-              />
-             
-            ) : (
-              <div className="no-cover">No Cover Available</div>
-            )}
-            <div className="book-info">
-              <strong>{book.title}</strong>
-              <p>{book.author_name ? book.author_name.join(', ') : 'Unknown Author'}</p>
+            <h2>Search Results</h2>
+            <div className="horizontal-scroll">
+                {searchResults.length === 0 && !loading ? (
+                    <p>No search results yet. Try searching for a book!</p>
+                ) : (
+                    searchResults.map(renderBookCard)
+                )}
             </div>
-          </div>
-        ))}
-        </div>
 
-    </div>
+            <h2>Discovery Queue</h2>
+            <div className="discovery-queue">
+                {discoveryQueue.map(renderBookCard)}
+            </div>
+        </div>
     );
 };
 
