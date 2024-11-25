@@ -14,10 +14,10 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 const generateSummary = async (title) => {
 
     const prompt = "Provide a short summary of '" + title + "' book and provide a list of 5 similar books.";
-    console.log(prompt)
+    //console.log(prompt)
     const result = await model.generateContent(prompt);
     let text = result.response.text();
-    console.log(text);
+    //console.log(text);
     return text;
 }
 
@@ -38,11 +38,12 @@ app.post('/book', (req, res) => {
     const { title, author } = req.body;
     // const prompt = `Provide a short summary of '${title}' book and by ${author}, and also provide a list of 5 similar books.`;
     // const result = model.generateContent(prompt);
+    // const responsePara = result.response.text();
     console.log('Received book data:', {title, author});
     // res.send(result.response.text()); // send back a response for front end
 
     const result = generateSummary(title);
-    //console.log(result);
+    console.log(result);
 
     res.status(200).send('here is the book data: ' + title + ' by ' + author);
 });
