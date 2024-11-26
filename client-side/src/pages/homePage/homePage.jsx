@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './homePage.css';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]); // For displaying search results
     const [discoveryQueue, setDiscoveryQueue] = useState([]); // Discovery queue with random books
@@ -58,10 +60,14 @@ const HomePage = () => {
         const bookData = {
             title: book.volumeInfo.title,
             author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
+           
         };
         try {
             const response = await axios.post('/book', bookData);
             console.log('Book data sent successfully!\n', response.data);
+            const {title, author, summary} = response.data;
+            const bookImage = book.volumeInfo.imageLinks?.thumbnail;
+            navigate('/summary', { state: { title, author, summary, bookImage } }); // navigate to summary page with book info
         } catch (error) {
             console.error('Error sending book data:', error);
         }
@@ -88,16 +94,18 @@ const HomePage = () => {
     return (
         <div className="app">
             <h1>Welcome to Book Brief!</h1>
+
             <input
                 type="text"
                 placeholder="Search for a book..."
                 value={searchQuery}
                 onChange={handleInput}
-                onKeyDown={handleKeyDown} // Add event listener for Enter key
+                onKeyDown={handleKeyDown} 
             />
+
             {loading && <p>Loading...</p>}
 
-            <h2>Search Results</h2>
+            <h2>Search Results:</h2>
             <div className="horizontal-scroll">
                 {searchResults.length === 0 && !loading ? (
                     <p>No search results yet. Try searching for a book!</p>

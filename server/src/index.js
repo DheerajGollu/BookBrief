@@ -5,36 +5,40 @@ import { GoogleGenerativeAI } from '@google/generative-ai'; // Import GoogleGene
 
 dotenv.config();
 const app = express(); // Create an express app
+app.use(express.json()); // Middleware to parse JSON request bodies
+
 const corsOptions = { 
     origin: ['http://localhost:5173'],
 }
+app.use(cors(corsOptions));// Enable CORS to allow requests from the client-side app
+
 const genAI = new GoogleGenerativeAI("AIzaSyBKVJXJ111S-ZVWGx0dDYEz7mCvJfWqdLg");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const generateSummary = async (title) => {
-    const prompt = "Provide a short summary of '" + title + "' book and provide a list of 5 similar book titles only without any explanation.";
+const generateSummary = async (title, author) => {
+    const prompt = "Provide a good summary of '" + title + "' book by this " + author + " and provide a list of 5 similar books.";
     const result = await model.generateContent(prompt);
     let text = result.response.text();
     return text;
 }
 
-app.use(express.json()); // Middleware to parse JSON request bodies
-
-app.use(cors(corsOptions));
 
 app.get('/', (req, res) => { 
-    res.send('Its coding time baby!'); 
+    res.send('congrats you have reached the server!'); 
 });
 
-app.post('/book', (req, res) => { 
+
+app.post('/book', async (req, res) => { 
     const { title, author } = req.body;
     console.log('Received book data:', {title, author});
-    generateSummary(title).then(summary => {
-        console.log(summary); // log the summary after promise resolved
-    }).catch(error => {
+    try {
+        const summary = await generateSummary(title, author);
+        console.log(summary); 
+        res.status(200).json({ title, author, summary });
+    } catch (error) {
         console.error('Error generating summary:', error);
-    });
-    res.status(200).send('here is the book data: ' + title + ' by ' + author);
+        res.status(500).send('Error generating summary');
+    }
 });
 
 
