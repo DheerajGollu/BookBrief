@@ -1,51 +1,44 @@
-import express from 'express'; // Import express
-import cors from 'cors'; // Import cors
-import dotenv from 'dotenv'; // Import dotenv
+import express from 'express'; 
+import cors from 'cors'; 
+import dotenv from 'dotenv'; 
 import { GoogleGenerativeAI } from '@google/generative-ai'; // Import GoogleGenerativeAI
 
 dotenv.config();
 const app = express(); // Create an express app
+app.use(express.json()); // Middleware to parse JSON request bodies
+
 const corsOptions = { 
     origin: ['http://localhost:5173'],
 }
+app.use(cors(corsOptions));// Enable CORS to allow requests from the client-side app
+
 const genAI = new GoogleGenerativeAI("AIzaSyBKVJXJ111S-ZVWGx0dDYEz7mCvJfWqdLg");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const generateSummary = async (title) => {
-
-    const prompt = "Provide a short summary of '" + title + "' book and provide a list of 5 similar books.";
-    //console.log(prompt)
+const generateSummary = async (title, author) => {
+    const prompt = "Provide a good summary of '" + title + "' book by this " + author + " and provide a list of 5 similar books.";
     const result = await model.generateContent(prompt);
     let text = result.response.text();
-    //console.log(text);
     return text;
 }
 
-//const prompt = "Provide a short summary of '" + bookname + "' book and provide a list of 5 similar books.";
-
-// const result = await model.generateContent(prompt);
-// console.log(result.response.text());
-
-app.use(express.json()); // Middleware to parse JSON request bodies
-
-app.use(cors(corsOptions));
 
 app.get('/', (req, res) => { 
-    res.send('Its coding time baby!'); 
+    res.send('congrats you have reached the server!'); 
 });
 
-app.post('/book', (req, res) => { 
+
+app.post('/book', async (req, res) => { 
     const { title, author } = req.body;
-    // const prompt = `Provide a short summary of '${title}' book and by ${author}, and also provide a list of 5 similar books.`;
-    // const result = model.generateContent(prompt);
-    // const responsePara = result.response.text();
     console.log('Received book data:', {title, author});
-    // res.send(result.response.text()); // send back a response for front end
-
-    const result = generateSummary(title);
-    console.log(result);
-
-    res.status(200).send('here is the book data: ' + title + ' by ' + author);
+    try {
+        const summary = await generateSummary(title, author);
+        console.log(summary); 
+        res.status(200).json({ title, author, summary });
+    } catch (error) {
+        console.error('Error generating summary:', error);
+        res.status(500).send('Error generating summary');
+    }
 });
 
 
