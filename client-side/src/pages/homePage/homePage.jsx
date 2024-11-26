@@ -21,7 +21,7 @@ const HomePage = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=5`);
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=20`);
             setSearchResults(response.data.items || []); // Set search results
         } catch (error) {
             console.error("Error fetching search results:", error);
