@@ -19,7 +19,7 @@ const HomePage = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=10`);
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=5`);
             setSearchResults(response.data.items || []); // Set search results
         } catch (error) {
             console.error("Error fetching search results:", error);
@@ -107,6 +107,7 @@ const HomePage = () => {
             </div>
 
             <h2>Discovery Queue</h2>
+            <button onClick={fetchDiscoveryQueue}> Shuffle </button>
             <div className="discovery-queue">
                 {discoveryQueue.map(renderBookCard)}
             </div>
