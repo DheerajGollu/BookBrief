@@ -61,7 +61,7 @@ const HomePage = () => {
         };
         try {
             const response = await axios.post('/book', bookData);
-            console.log('Book data sent successfully!', response.data);
+            console.log('Book data sent successfully!\n', response.data);
         } catch (error) {
             console.error('Error sending book data:', error);
         }
