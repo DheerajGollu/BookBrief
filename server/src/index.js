@@ -16,7 +16,8 @@ const genAI = new GoogleGenerativeAI("AIzaSyBKVJXJ111S-ZVWGx0dDYEz7mCvJfWqdLg");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const generateSummary = async (title, author) => {
-    const prompt = "Provide a good summary of '" + title + "' book by this " + author + " and provide a list of 5 similar books.";
+    const prompt = "Provide a short summary of '" + title + "' book by " + author + "";
+    //   const prompt = "Provide a good summary of '" + title + "' book by this " + author + " and provide a list of 5 similar books.";
     const result = await model.generateContent(prompt);
     let text = result.response.text();
     return text;
@@ -28,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.post('/book', async (req, res) => { 
+app.post('/summarizeBook', async (req, res) => { 
     const { title, author } = req.body;
     console.log('Received book data:', {title, author});
     try {
