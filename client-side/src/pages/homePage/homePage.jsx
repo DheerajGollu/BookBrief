@@ -56,21 +56,13 @@ const HomePage = () => {
         }
     };
 
-    const handleBookClick = async (book) => {
+    const handleBookClick = (book) => {
         const bookData = {
             title: book.volumeInfo.title,
             author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
-           
+            bookImage: book.volumeInfo.imageLinks?.thumbnail || 'No Image Available'
         };
-        try {
-            const response = await axios.post('/book', bookData);
-            console.log('Book data sent successfully!\n', response.data);
-            const {title, author, summary} = response.data;
-            const bookImage = book.volumeInfo.imageLinks?.thumbnail;
-            navigate('/summary', { state: { title, author, summary, bookImage } }); // navigate to summary page with book info
-        } catch (error) {
-            console.error('Error sending book data:', error);
-        }
+        navigate('/summary', { state: bookData });
     };
 
     const renderBookCard = (book) => (
