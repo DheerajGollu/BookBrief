@@ -23,14 +23,12 @@ const generateSummary = async (title, author) => {
     const prompt = 
         `Provide a good summary of "` + title + `" by ` + author + ` and a list of 5 similar books using this JSON schema: 
 
-            {"summary":string, similarBooks: Array<{"title":string, "description": string}>}
+            {"summary": string, similarBooks: Array<{"title": string, "description": string}>}
         `;
     
     const result = await model.generateContent(prompt);
     let text = result.response.text();
     text = text.substring(8, text.length - 4);
-    console.log(text);
-    //console.log(JSON.stringify(text));
     return text;
 }
 
@@ -46,6 +44,7 @@ app.post('/summarizeBook', async (req, res) => {
     try {
         let summary = await generateSummary(title, author);
         summary = JSON.parse(summary);
+        console.log(summary.similarBooks);
         res.status(200).json({ title, author, summary });
     } catch (error) {
         console.error('Error generating summary:', error);
