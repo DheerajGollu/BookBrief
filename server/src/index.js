@@ -17,9 +17,6 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const generateSummary = async (title, author) => {
 
-    //const schema = '{ title:"title", authors:"authors", summary:"summary", similarity_list:[ {title:"title", decription:"description"} ] }'
-    //const prompt = "Provide a short summary of '" + title + "' by the authors: " + author + " and a list of 5 similar books in the following schema: " + schema;
-    //   const prompt = "Provide a good summary of '" + title + "' book by this " + author + " and provide a list of 5 similar books.";
     const prompt = 
         `Provide a good summary of "` + title + `" by ` + author + ` and a list of 5 similar books using this JSON schema: 
 
@@ -31,13 +28,6 @@ const generateSummary = async (title, author) => {
     text = text.substring(8, text.length - 4);
     return text;
 }
-const getSimilarBooks = async (title) => {
-    const prompt = "Provide a list of 5 similar books to '" + title + "', I just need their title only.";
-    const result = await model.generateContent(prompt);
-    let text = result.response.text();
-    return text;
-}
-
 app.get('/', (req, res) => { 
     res.send('congrats you have reached the server!'); 
 });
@@ -49,25 +39,14 @@ app.post('/summarizeBook', async (req, res) => {
     try {
         let summary = await generateSummary(title, author);
         summary = JSON.parse(summary);
-        console.log(summary.similarBooks);
+        // console.log(summary.similarBooks);
+        console.log('Generated summary:', summary.summary);
         res.status(200).json({ title, author, summary });
     } catch (error) {
         console.error('Error generating summary:', error);
         res.status(500).send('Error generating summary');
     }
 });
-
-// app.post('/getSimilarBooks', async (req, res) => {
-//     const { title } = req.body;
-//     try {
-//         const similarBooks = await getSimilarBooks(title);
-//         // console.log(similarBooks); 
-//         res.status(200).json({ similarBooks });
-//     } catch (error) {
-//         console.error('Error generating summary:', error);
-//         res.status(500).send('Error generating summary');
-//     }
-// });
 
 
 app.listen(8080, () => {
