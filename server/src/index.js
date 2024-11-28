@@ -22,7 +22,12 @@ const generateSummary = async (title, author) => {
     let text = result.response.text();
     return text;
 }
-
+const getSimilarBooks = async (title) => {
+    const prompt = "Provide a list of 5 similar books to '" + title + "', I just need their title only.";
+    const result = await model.generateContent(prompt);
+    let text = result.response.text();
+    return text;
+}
 
 app.get('/', (req, res) => { 
     res.send('congrats you have reached the server!'); 
@@ -35,12 +40,24 @@ app.post('/summarizeBook', async (req, res) => {
     try {
         const summary = await generateSummary(title, author);
         console.log(summary); 
-        res.status(200).json({ title, author, summary });
+        res.status(200).json({ summary });
     } catch (error) {
         console.error('Error generating summary:', error);
         res.status(500).send('Error generating summary');
     }
 });
+
+// app.post('/getSimilarBooks', async (req, res) => {
+//     const { title } = req.body;
+//     try {
+//         const similarBooks = await getSimilarBooks(title);
+//         // console.log(similarBooks); 
+//         res.status(200).json({ similarBooks });
+//     } catch (error) {
+//         console.error('Error generating summary:', error);
+//         res.status(500).send('Error generating summary');
+//     }
+// });
 
 
 app.listen(8080, () => {

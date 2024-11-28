@@ -2,3 +2,21 @@ body{
     background-color: antiquewhite;
     color: brown;
 }
+.typewriter {
+    font-family: monospace; /* Optional: Choose a typewriter-like font */
+    white-space: pre-wrap; /* Allow the text to wrap at the end of the line */
+    overflow: hidden; /* Hide the text beyond the container width */
+    display: inline-block; /* Needed for the effect */
+    width: 100%; /* Adjust to desired width */
+    animation: blink-caret 4s step-end infinite;
+}
+
+
+@keyframes blink-caret {
+    from, to {
+        border-right-color: transparent;
+    }
+    50% {
+        border-right-color: black; /* Adjust caret color */
+    }
+}
