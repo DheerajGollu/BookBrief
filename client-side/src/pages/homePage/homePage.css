@@ -14,14 +14,14 @@
 }
 
 .book-cover {
-    width: 100%;
+    width: 150px;
     height: 200px; /* Maintain a fixed height for covers */
     object-fit: cover; /* Ensure image scaling looks good */
     border-radius: 5px;
 }
 
 .no-cover {
-    width: 100%;
+    width: 150px;
     height: 200px;
     display: flex;
     align-items: center;

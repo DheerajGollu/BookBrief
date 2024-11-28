@@ -7,36 +7,67 @@ const SummaryPage = () => {
     const navigate = useNavigate();
     const location = useLocation(); //this contains info bout current URL (state, pathname)
     const [summary, setSummary] = useState('Generating summary...');
+    const [similarList, setSimilarList] = useState([]);
+    const [books, setBooks] = useState([]);
+    //const [loading, setLoading] = useState(false);
     const { title, author, bookImage } = location.state; //destructure the info
     const [words, setWords] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
+
+    
+
     useEffect(() => {
-        const fetchSummary = async () => { //this is to fetch the summary of the book
+        const fetchSummary = async () => {
             try {
-                const response = await axios.post('/summarizeBook', { title, author });
-                setWords(response.data.summary.split(' '));
-                setCurrentIndex(0);
-                setSummary('');
+    
+                try {
+                    const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=1`);
+                    //setBooks(response.data.items || []); // Set results
+                    //console.log(JSON.stringify(response.data.items[0]));
+                    return response.data.items[0];
+                } catch (error) {
+                    console.error("Error fetching search results:", error);
+                }
+    
             } catch (error) {
                 setSummary('Error generating summary');
                 console.error('Error generating summary:', error);
             }
         };
-    
+
+        const fetchSummary = async () => {
+            try {
+                const response = await axios.post('/summarizeBook', { title, author });
+                
+                setSummary(response.data.summary.summary);
+                let list = response.data.summary.similarBooks;
+                
+                let books_list = []
+
+                books_list = await Promise.all(
+                    list.map(async (item) => {
+                      let info = await fetchBookData(item.title);
+                      return info; // Return each resolved info
+                    })
+                );
+                
+                setSimilarList(list);
+                //console.log("list: " + JSON.stringify(list));
+                console.log("book_list: " + JSON.stringify(books_list));
+                setBooks(books_list);
+                console.log("books: " + JSON.stringify(books));
+
+            } catch (error) {
+                setSummary('Error generating summary');
+                console.error('Error generating summary:', error);
+            }
+            
+        };
+
         fetchSummary();
     }, [title, author]);
-    
-    useEffect(() => { //this is to display the summary word by word 
-        if (words.length > 0 && currentIndex < words.length) {
-            const intervalId = setInterval(() => {
-                setSummary(prev => prev + (prev ? ' ' : '') + words[currentIndex]);
-                setCurrentIndex(currentIndex + 1);
-            }, 50);
-    
-            return () => clearInterval(intervalId);
-        }
-    }, [words, currentIndex]);
 
     return (
         <div className="SummaryPageContainer">
@@ -46,13 +77,9 @@ const SummaryPage = () => {
             <p><strong>Title:</strong> {title}</p>
             <p><strong>Author:</strong> {author}</p>
             <p><strong>Summary:</strong> {summary}</p>
-            <br />
             <button onClick={() => navigate('/')}>Back to Home</button>
         </div>
     );
 };
 
 export default SummaryPage;
-
-
-
