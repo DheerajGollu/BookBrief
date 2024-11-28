@@ -52,8 +52,6 @@ const SummaryPage = () => {
                     })
                 );
                 
-                setSimilarList(list);
-                //console.log("list: " + JSON.stringify(list));
                 console.log("book_list: " + JSON.stringify(books_list));
                 setBooks(books_list);
                 console.log("books: " + JSON.stringify(books));
@@ -68,24 +66,28 @@ const SummaryPage = () => {
         fetchSummary();
     }, [title, author]);
 
-    const renderBook = (book) => (
 
-        <div key={book.id} className="book-card" onClick={() => handleBookClick(book)}>
-            {book.volumeInfo.imageLinks?.thumbnail ? (
-                <img
-                    src={book.volumeInfo.imageLinks.thumbnail}
-                    alt={`${book.volumeInfo.title} cover`}
-                    className="book-cover"
-                />
-            ) : (
-                <div className="no-cover">No Cover Available</div>
-            )}
-            <div className="book-info">
-                <strong>{book.volumeInfo.title}</strong>
-                <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author'}</p>
+    const renderBook = (book) => {
+        
+        return(
+            <div key={book.id} className="book-card">
+                {book.volumeInfo.imageLinks?.thumbnail ? (
+                    <img
+                        src={book.volumeInfo.imageLinks.thumbnail}
+                        alt={`${book.volumeInfo.title} cover`}
+                        className="book-cover"
+                    />
+                ) : (
+                    <div className="no-cover">No Cover Available</div>
+                )}
+                <div className="book-info">
+                    <strong>{book.volumeInfo.title}</strong>
+                    <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author'}</p>
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
+      
 
     return (
         <>
