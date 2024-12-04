@@ -112,7 +112,7 @@ const SummaryPage = () => {
         <div className="SummaryPageContainer">
             <h1>Summary Page:</h1>
             <h2>Here are the information for that book:</h2>
-            <img src={bookImage} alt={`${title} cover`}/>
+            <img src={bookImage} alt={`${title} cover`} className="sumImg"/>
             <p><strong>Title:</strong> {title}</p>
             <p><strong>Author:</strong> {author}</p>
             <p><strong>Summary:</strong> {summary}</p>

@@ -1,6 +1,6 @@
 body{
     background-color: antiquewhite;
-    color: brown;
+    color: rgb(237, 254, 255);
 }
 
 .book-card {
@@ -31,6 +31,13 @@ body{
 
 .book-info {
     margin-top: 10px;
+}
+
+.sumImg {
+
+    margin-left: 10%;
+    margin-right: auto;
+    width: 50%;
 }
 
 .horizontal-scroll {

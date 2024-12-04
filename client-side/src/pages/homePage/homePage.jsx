@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './homePage.css';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass, faShuffle } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -62,6 +64,7 @@ const HomePage = () => {
             author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
             bookImage: book.volumeInfo.imageLinks?.thumbnail || 'No Image Available'
         };
+
         navigate('/summary', { state: bookData });
     };
 
@@ -85,15 +88,22 @@ const HomePage = () => {
 
     return (
         <div className="app">
-            <h1>Welcome to Book Brief!</h1>
+            <h1 className="title">Book Brief</h1>
 
-            <input
-                type="text"
-                placeholder="Search for a book..."
-                value={searchQuery}
-                onChange={handleInput}
-                onKeyDown={handleKeyDown} 
-            />
+            <div className="search-area">
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={handleInput}
+                        onKeyDown={handleKeyDown} 
+                    />
+                    <button className="iconBtn" onClick={() => fetchSearchResults(searchQuery)}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" size="2x" />
+                    </button>
+                </div>
+            </div>
 
             {loading && <p>Loading...</p>}
 
@@ -105,9 +115,12 @@ const HomePage = () => {
                     searchResults.map(renderBookCard)
                 )}
             </div>
-
-            <h2>Discovery Queue</h2>
-            <button onClick={fetchDiscoveryQueue}> Shuffle </button>
+            <br></br>
+            <h2>Discovery Queue           
+                <button className="iconBtn" onClick={fetchDiscoveryQueue}> 
+                    <FontAwesomeIcon className="icon" icon={faShuffle} />
+                </button>
+            </h2>
             <div className="discovery-queue">
                 {discoveryQueue.map(renderBookCard)}
             </div>
