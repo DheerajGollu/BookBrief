@@ -6,7 +6,7 @@
 
 .app {
 
-    font-family: Arial, sans-serif;
+    font-family: "Inter", sans-serif;
     padding: 10px 20px 20px 20px;
     color: rgb(237, 254, 255);
     text-shadow: -1px 0 var(--textShadowColor), 0 2px var(--textShadowColor), 2px 0 var(--textShadowColor), 0 -1px var(--textShadowColor);
@@ -77,8 +77,6 @@ body {
     z-index: -1;
     padding: 2px;
     border-radius: inherit;
-    /*background-image: linear-gradient(var(--angle), #c915dd, #d9138a, #10a5eb, #fff947, #6aff1a);*/
-    /*background-image: linear-gradient(var(--angle), #ffffff, #85f4fc, #ffffff);*/
     background-image: linear-gradient(var(--angle), yellow, orange, red, rgb(255, 0, 149), purple);
     animation: spin 4s infinite linear;
 }
@@ -146,7 +144,7 @@ input {
 
 
 .iconBtn {
-
+    cursor: pointer;
     background-color: transparent;
     border: none;
 }

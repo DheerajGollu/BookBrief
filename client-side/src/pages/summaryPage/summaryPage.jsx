@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 const SummaryPage = () => {
     const navigate = useNavigate();
     const location = useLocation(); //this contains info bout current URL (state, pathname)
-     const { title, author, bookImage } = location.state; //destructure the info
+    const { title, author, bookImage } = location.state; //destructure the info
     const [summary, setSummary] = useState('Generating summary...');
+    const [loading, setLoading] = useState(false);
     const [books, setBooks] = useState([]);
     const [words, setWords] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,14 +19,12 @@ const SummaryPage = () => {
     useEffect(() => {
         const fetchBookData = async (query) => {
             try {
-    
                 try {
                     const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=1`);
                     return response.data.items[0]; 
                 } catch (error) {
                     console.error("Error fetching search results:", error);
                 }
-    
             } catch (error) {
                 setSummary('Error generating summary');
                 console.error('Error generating summary:', error);
@@ -33,16 +32,13 @@ const SummaryPage = () => {
         };
 
         const fetchSummary = async () => {
-
             try {
                 const response = await axios.post('/summarizeBook', { title, author });
-                
-               // setSummary(response.data.summary.summary);
                setWords(response.data.summary.summary.split(' '));
                setCurrentIndex(0);
                setSummary(''); // Clear the summary
+               setLoading(false);
                 let list = response.data.summary.similarBooks;
-                
                 let books_list = []
                 books_list = await Promise.all(
                     list.map(async (item) => {
@@ -50,7 +46,6 @@ const SummaryPage = () => {
                       return info; // Return each resolved info
                     })
                 );
-                
                 console.log("book_list: " + JSON.stringify(books_list));
                 setBooks(books_list);
 
@@ -58,7 +53,6 @@ const SummaryPage = () => {
                 setSummary('Error generating summary');
                 console.error('Error generating summary:', error);
             }
-            
         };
 
         fetchSummary();
@@ -81,13 +75,13 @@ const SummaryPage = () => {
             author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
             bookImage: book.volumeInfo.imageLinks?.thumbnail || 'No Image Available'
         };
+        setLoading(true);
+        setBooks([]);
+        setSummary('Generating summary...');
         navigate('/summary', { state: bookData });
     };
 
-
-
     const renderBook = (book) => {
-        
         return(
             <div key={book.id} className="book-card" onClick={() => handleBookClick(book)}>
                 {book.volumeInfo.imageLinks?.thumbnail ? (
@@ -107,7 +101,6 @@ const SummaryPage = () => {
         );
     };
       
-
     return (
         <div className="SummaryPageContainer">
             <h1>Summary Page:</h1>
@@ -120,9 +113,10 @@ const SummaryPage = () => {
 
             <div>
                 <h1>5 Similar Books:</h1>
+
                 <div className="horizontal_scroll">
                     {books.length === 0 ? (
-                        <p>Loading Books...</p>
+                          loading ? <p>Loading Books...</p> : <p>Loading Books...</p>
                     ) : (
                         books.map(renderBook)
                     )}

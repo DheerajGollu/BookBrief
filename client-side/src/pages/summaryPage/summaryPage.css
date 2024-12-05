@@ -34,10 +34,11 @@ body{
 }
 
 .sumImg {
-
-    margin-left: 10%;
-    margin-right: auto;
-    width: 50%;
+    width: 15%; /* Adjust the width as needed */
+    height: 15%; /* Maintain aspect ratio */
+    image-rendering: auto; 
+  image-rendering: crisp-edges; 
+  image-rendering: high-quality; 
 }
 
 .horizontal-scroll {

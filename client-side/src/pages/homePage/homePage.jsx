@@ -14,13 +14,18 @@ const HomePage = () => {
 
     const GOOGLE_BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
 
-    // Fetch search results based on the query
-    const fetchSearchResults = async (query) => {
-        if (!query) {
-            setSearchResults([]); // Clear search results if query is empty
+    const fetchSearchResults = async (query) => {// fetch search results based on the query
+        if (!query || query.trim() === '') {// clear search results if query is empty or only contains white spaces
+            setSearchResults([]); 
             return;
         }
-
+    const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/g;
+    if (specialCharPattern.test(query)) {
+        setSearchResults([]);
+        alert("Search query contains special characters!!!");
+        console.error("Error: Search query contains special characters.");
+        return;
+    }
         setLoading(true);
         try {
             const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=20`);
@@ -32,8 +37,7 @@ const HomePage = () => {
         }
     };
 
-    // Fetch discovery queue with random books
-    const fetchDiscoveryQueue = async () => {
+    const fetchDiscoveryQueue = async () => { // Fetch discovery queue with random books
         try {
             const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=subject:fiction&maxResults=40`);
             const shuffledBooks = response.data.items?.sort(() => 0.5 - Math.random()) || []; // Shuffle books
