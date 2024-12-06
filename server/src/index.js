@@ -28,6 +28,7 @@ const generateSummary = async (title, author) => {
     text = text.substring(8, text.length - 4);
     return text;
 }
+
 app.get('/', (req, res) => { 
     res.send('congrats you have reached the server!'); 
 });
@@ -39,7 +40,6 @@ app.post('/summarizeBook', async (req, res) => {
     try {
         let summary = await generateSummary(title, author);
         summary = JSON.parse(summary);
-        // console.log(summary.similarBooks);
         console.log('Generated summary:', summary.summary);
         res.status(200).json({ title, author, summary });
     } catch (error) {

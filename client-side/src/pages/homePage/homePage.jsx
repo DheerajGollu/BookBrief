@@ -28,7 +28,7 @@ const HomePage = () => {
     }
         setLoading(true);
         try {
-            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=20`);
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=10`);
             setSearchResults(response.data.items || []); // Set search results
         } catch (error) {
             console.error("Error fetching search results:", error);
@@ -39,7 +39,7 @@ const HomePage = () => {
 
     const fetchDiscoveryQueue = async () => { // Fetch discovery queue with random books
         try {
-            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=subject:fiction&maxResults=40`);
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=subject:fiction&maxResults=5`);
             const shuffledBooks = response.data.items?.sort(() => 0.5 - Math.random()) || []; // Shuffle books
             setDiscoveryQueue(shuffledBooks.slice(0, 10)); // Pick the first 10 random books
         } catch (error) {
@@ -71,7 +71,7 @@ const HomePage = () => {
 
         navigate('/summary', { state: bookData });
     };
-
+    
     const renderBookCard = (book) => (
         <div key={book.id} className="book-card" onClick={() => handleBookClick(book)}>
             {book.volumeInfo.imageLinks?.thumbnail ? (
