@@ -102,8 +102,24 @@ const SummaryPage = () => {
     };
       
     return (
-        <div className="SummaryPageContainer">
-            <h1>Summary Page:</h1>
+        <div className="summaryPageContainer">
+            <div className='headerContainer'>
+              <p className='mainHeader'> Book Brief</p> 
+              <p className='subHeader'>Summary</p> 
+            </div>
+            
+            <div>
+
+            </div>
+            
+        </div>
+    );
+};
+
+export default SummaryPage;
+
+
+{/* <h1>Summary Page:</h1>
             <h2>Here are the information for that book:</h2>
             <img src={bookImage} alt={`${title} cover`} className="sumImg"/>
             <p><strong>Title:</strong> {title}</p>
@@ -121,10 +137,4 @@ const SummaryPage = () => {
                         books.map(renderBook)
                     )}
                 </div>
-            </div>
-
-        </div>
-    );
-};
-
-export default SummaryPage;
+            </div> */}
