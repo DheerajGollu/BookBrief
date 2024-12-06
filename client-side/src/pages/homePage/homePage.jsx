@@ -23,7 +23,7 @@ const HomePage = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=20`);
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=10`);
             setSearchResults(response.data.items || []); // Set search results
         } catch (error) {
             console.error("Error fetching search results:", error);
@@ -35,7 +35,7 @@ const HomePage = () => {
     // Fetch discovery queue with random books
     const fetchDiscoveryQueue = async () => {
         try {
-            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=subject:fiction&maxResults=40`);
+            const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=subject:fiction&maxResults=10`);
             const shuffledBooks = response.data.items?.sort(() => 0.5 - Math.random()) || []; // Shuffle books
             setDiscoveryQueue(shuffledBooks.slice(0, 10)); // Pick the first 10 random books
         } catch (error) {
