@@ -2,12 +2,13 @@ import './summaryPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 
 const SummaryPage = () => {
     const navigate = useNavigate();
     const location = useLocation(); //this contains info bout current URL (state, pathname)
     const { title, author, bookImage } = location.state; //destructure the info
-    const [summary, setSummary] = useState('Generating summary...');
+    const [summary, setSummary] = useState(<Spinner variant="success" animation="border" />);
     const [loading, setLoading] = useState(false);
     const [books, setBooks] = useState([]);
     const [words, setWords] = useState([]);
@@ -36,7 +37,7 @@ const SummaryPage = () => {
                 const response = await axios.post('/summarizeBook', { title, author });
                setWords(response.data.summary.summary.split(' '));
                setCurrentIndex(0);
-               setSummary(''); // Clear the summary
+               setSummary(''); 
                setLoading(false);
                 let list = response.data.summary.similarBooks;
                 let books_list = []
@@ -62,7 +63,7 @@ const SummaryPage = () => {
         if (words.length > 0 && currentIndex < words.length) {
             const intervalId = setInterval(() => {
                 setSummary(prev => prev + (prev ? ' ' : '') + words[currentIndex]);
-                setCurrentIndex(currentIndex + 1);
+                setCurrentIndex(prevIndex => prevIndex + 1); // Use functional update
             }, 50);
     
             return () => clearInterval(intervalId);
@@ -77,7 +78,7 @@ const SummaryPage = () => {
         };
         setLoading(true);
         setBooks([]);
-        setSummary('Generating summary...');
+        setSummary(<Spinner variant="success" animation="border" />);
         navigate('/summary', { state: bookData });
     };
 
@@ -93,48 +94,58 @@ const SummaryPage = () => {
                 ) : (
                     <div className="no-cover">No Cover Available</div>
                 )}
-                <div className="book-info">
+                <div className="book-info whiteText">
                     <strong>{book.volumeInfo.title}</strong>
-                    <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author'}</p>
                 </div>
             </div>
         );
     };
+
+    const handleHomepageClick = () => {
+        navigate('/');
+    }
       
     return (
         <div className="summaryPageContainer">
-            <div className='headerContainer'>
+            <div className='headerContainer' onClick={handleHomepageClick}>
               <p className='mainHeader'> Book Brief</p> 
               <p className='subHeader'>Summary</p> 
             </div>
-            
-            <div>
 
+            <div className='bookInfoContainer'>
+                <div className='bookCoverContainer'>
+                    <img className="bookCover" src={bookImage} alt={`${title} cover`}/>
+                </div>
+                <div className='bookSummaryContainer'>
+                    <div className='bookTitle'>
+                        <p className='normalText'> <span className="bookTitleText"> Title:</span> {title}</p>
+                    </div>
+                    <div className='bookAuthor'>
+                    <p className='normalText'> <span className="bookTitleText"> Author:</span> {author}</p>
+                    </div>
+                    <hr style={{ width: '100%', height: '1px', color: 'white' }} />
+                    <div className='bookSummary'>
+                        <p className='normalText'>{summary}</p>
+                    </div>
+                </div>
             </div>
-            
+
+            <div className='similarBooksContainer'>
+                <div className='similarBooksHeader'>
+                    <p className='similarBookText'>Similar Books</p>
+                </div>
+                <div className='horizontalScroll'>
+                    {books.length === 0 ? (
+                          loading ?  <Spinner variant="success" animation="border" /> 
+                          :  <Spinner variant="success" animation="border" />
+                    ) : (
+                        books.map(renderBook)
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
 
 export default SummaryPage;
 
-
-{/* <h1>Summary Page:</h1>
-            <h2>Here are the information for that book:</h2>
-            <img src={bookImage} alt={`${title} cover`} className="sumImg"/>
-            <p><strong>Title:</strong> {title}</p>
-            <p><strong>Author:</strong> {author}</p>
-            <p><strong>Summary:</strong> {summary}</p>
-            <button onClick={() => navigate('/')}>Back to Home</button>
-
-            <div>
-                <h1>5 Similar Books:</h1>
-
-                <div className="horizontal_scroll">
-                    {books.length === 0 ? (
-                          loading ? <p>Loading Books...</p> : <p>Loading Books...</p>
-                    ) : (
-                        books.map(renderBook)
-                    )}
-                </div>
-            </div> */}
