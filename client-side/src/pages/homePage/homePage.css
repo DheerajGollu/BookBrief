@@ -1,32 +1,32 @@
 
 :root {
 
-    --textShadowColor: rgb(0, 0, 0);
+    --text-color: #b1d1cb;
+    --title-color: #d0d6d6;
+    --div-color: #042630;
+    --bg-color: #041421;
 }
 
 .app {
 
+    /*
     font-family: "Inter", sans-serif;
     padding: 10px 20px 20px 20px;
     color: rgb(237, 254, 255);
     text-shadow: -1px 0 var(--textShadowColor), 0 2px var(--textShadowColor), 2px 0 var(--textShadowColor), 0 -1px var(--textShadowColor);
     border: 3px solid white;
     box-shadow: 0px 0px 10px 5px white;
-    padding: 1%;
-    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
-    background-size: 400% 400%;
-    animation: gradient 5s ease infinite;
+    padding: 1%;*/
+    font-family: "Inter", sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    overflow-y: auto;
     height: 100vh;
+    width: 100%;
+    
 }
 
-/* body {
-    padding: 1%;
-    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
-    background-size: 400% 400%;
-    animation: gradient 5s ease infinite;
-    height: 100vh;
-  } */
-
+/*
   @keyframes gradient {
     0% {
       background-position: 0% 50%;
@@ -38,17 +38,28 @@
       background-position: 0% 50%;
     }
   }
+*/
 
+.header{
+
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
 
 .title {
 
+    padding-top: 25px;
+    padding-bottom: 5px;
     text-align: center;
     font-style: italic;
     font-size: 50px;
+    border-bottom: 2px solid var(--text-color);
 }
 
 .search-area {
 
+    padding-top: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,12 +74,18 @@
     position: relative;
     padding: 1.2em;
     margin-bottom: 20px;
-    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    background: var(--text-color); /*linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);*/
     background-size: 400% 400%;
-    animation: gradient 5s ease infinite;
+    /*animation: gradient 5s ease infinite;*/
     border-radius: 60px;
 }
 
+.search-bar input::placeholder {
+
+    color: white;
+}
+
+/*
 .search-bar::after, .search-bar::before {
     content: '';
     position: absolute;
@@ -78,7 +95,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: -1;
-    padding: 2px;
+    padding: 15px;
     border-radius: inherit;
     background-image: linear-gradient(var(--angle), yellow, orange, red, rgb(255, 0, 149), purple);
     animation: spin 4s infinite linear;
@@ -88,6 +105,18 @@
     filter: blur(5rem);
     opacity: 0.8;
 }
+
+@keyframes spin{
+
+    0%{
+        --angle: 0deg;
+    }
+    100%{
+        --angle: 360deg;
+    }
+}
+
+*/
 
 .search-bar:hover input {
 
@@ -105,24 +134,13 @@
     rotate: 90deg;
 }
 
-@keyframes spin{
-
-    0%{
-        --angle: 0deg;
-    }
-    100%{
-        --angle: 360deg;
-    }
-}
-
-
 input {
 
     width: 80px;
     font-size: 1.2rem;
     border: none;
     outline: none;
-    color: white;
+    color: var(--div-color);
     background-color: transparent;
     transition: 0.6s;
 }
@@ -140,7 +158,7 @@ input {
 
     margin-top: auto;
     margin-bottom: auto;
-    color:white;
+    color: white;
     font-size: 25px;
     transition: 0.6s;
 }
@@ -150,25 +168,26 @@ input {
     cursor: pointer;
     background-color: transparent;
     border: none;
+    margin-left: 10px;
 }
 
 .iconBtn:hover .icon {
 
-    color: rgb(146, 189, 255);
+    color: rgb(103, 181, 255);
 }
 
 
 img {
 
-    border: 2px solid black;
-    box-shadow: 0px 0px 10px 1px white;
+    border: 1px solid var(--text-color);
+    box-shadow: 0px 0px 10px 1px var(--text-color);
     transition: 0.2s;
 }
 
-.book-card {
+.app .book-card {
     display: inline-block;
     width: 150px; /* Set consistent card width */
-    margin: 10px;
+    margin: 35px;
     padding: 5px;
     text-align: center;
     cursor: pointer;
@@ -176,7 +195,7 @@ img {
 
 .book-card:hover img{
 
-    box-shadow: 0px 0px 10px 8px rgb(146, 189, 255);
+    box-shadow: 0px 0px 10px 5px var(--text-color);
 }
 
 .book-cover {
@@ -201,10 +220,30 @@ img {
     margin-top: 10px;
 }
 
-.horizontal-scroll {
+/*
+.resultsArea {
+
     display: flex;
-    overflow-x: auto; /* Enable horizontal scrolling */
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+}
+
+.horizontal-scroll p{
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.horizontal-scroll {
+
+    display: flex;
+    overflow-x: auto;
     padding-bottom: 10px;
+    width: 85%;
+    min-height: 300px;
+    border: 2px solid black;
+    align-items: center;
     gap: 10px;
 }
 
@@ -220,10 +259,79 @@ img {
     .horizontal-scroll::-webkit-scrollbar-track {
         background-color: #f1f1f1;
     }
+*/
 
-.discovery-queue {
+.container {
+
     display: flex;
-    flex-wrap: wrap; /* Wrap items into multiple rows */
-    justify-content: center;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-bottom: 25px;
+    padding-top: 50px;
+}
+
+
+.inner-container{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    border-radius: 10px;
+    width: 85%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: var(--div-color);
+    transition: --var1 1.5s;
+}
+
+.books-container {
+    display: flex;
+    justify-content: space-evenly;
+    overflow-x: auto; 
+    padding-top: 10px;
     gap: 10px;
 }
+
+.header-container{
+    padding: 10px;
+    /*border-bottom: 1px solid var(--bg-color);
+    */
+    margin-bottom: 20px;
+}
+.header-container p{
+    margin-bottom: 0%;
+}
+
+.header-text{
+    color: var(--title-color);
+    font-size: 30px;
+    font-weight: 600;
+}
+
+
+
+  .inner-container:hover ::-webkit-scrollbar{
+    height: 10px;
+  }
+
+  .inner-container ::-webkit-scrollbar{
+
+    height: 8px;
+  }
+
+  /* Track 
+  .inner-container ::-webkit-scrollbar-track {
+    background: pink;
+    border-radius: 10px;
+  }*/
+  
+  /* Handle */
+  .inner-container ::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .inner-container ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-color);
+  }

@@ -4,6 +4,7 @@ import './homePage.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faShuffle } from '@fortawesome/free-solid-svg-icons';
+import Spinner from 'react-bootstrap/Spinner';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -92,7 +93,10 @@ const HomePage = () => {
 
     return (
         <div className="app">
-            <h1 className="title">Book Brief</h1>
+
+            <div className="header">
+                <h1 className="title">Book Brief</h1>
+            </div>
 
             <div className="search-area">
                 <div className="search-bar">
@@ -109,25 +113,43 @@ const HomePage = () => {
                 </div>
             </div>
 
-            {loading && <p>Loading...</p>}
-
-            <h2>Search Results:</h2>
-            <div className="horizontal-scroll">
-                {searchResults.length === 0 && !loading ? (
-                    <p>No search results yet. Try searching for a book!</p>
-                ) : (
-                    searchResults.map(renderBookCard)
-                )}
-            </div>
+            { searchResults.length != 0 ?
+                (<div className="container">
+                    <div className='inner-container'>
+                        <div className='header-container'>
+                            <p className='header-text'> Search Results </p>
+                        </div>
+                        <div className="books-container">
+                            {searchResults.length === 0 ? (
+                                loading ?  <Spinner variant="success" animation="border" /> 
+                                :  <p>Try Searching For A Book</p>
+                            ) : (
+                                searchResults.map(renderBookCard)
+                            )}
+                        </div>
+                    </div>
+                </div>) : (<></>) 
+            }
+            
             <br></br>
-            <h2>Discovery Queue           
-                <button className="iconBtn" onClick={fetchDiscoveryQueue}> 
-                    <FontAwesomeIcon className="icon" icon={faShuffle} />
-                </button>
-            </h2>
-            <div className="discovery-queue">
-                {discoveryQueue.map(renderBookCard)}
+            
+            <div className="container">
+                <div className='inner-container'>
+                    <div className='header-container'>
+                        <p className='header-text'>
+                            Discovery Queue
+
+                            <button className="iconBtn" onClick={fetchDiscoveryQueue}> 
+                                <FontAwesomeIcon className="icon" icon={faShuffle} />
+                            </button>
+                        </p>
+                    </div>
+                    <div className='books-container'>
+                        {discoveryQueue.map(renderBookCard)}
+                    </div>
+                </div>
             </div>
+
         </div>
     );
 };
