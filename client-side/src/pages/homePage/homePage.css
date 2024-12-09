@@ -187,7 +187,7 @@ img {
 .app .book-card {
     display: inline-block;
     width: 150px; /* Set consistent card width */
-    margin: 35px;
+    margin: 25px;
     padding: 5px;
     text-align: center;
     cursor: pointer;
@@ -286,7 +286,7 @@ img {
 
 .books-container {
     display: flex;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly    ; */
     overflow-x: auto; 
     padding-top: 10px;
     gap: 10px;

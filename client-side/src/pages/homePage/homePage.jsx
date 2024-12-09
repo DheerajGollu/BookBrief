@@ -138,7 +138,7 @@ const HomePage = () => {
                     <div className='header-container'>
                         <p className='header-text'>
                             Discovery Queue
-
+            
                             <button className="iconBtn" onClick={fetchDiscoveryQueue}> 
                                 <FontAwesomeIcon className="icon" icon={faShuffle} />
                             </button>
