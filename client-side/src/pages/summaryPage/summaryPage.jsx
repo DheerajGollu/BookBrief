@@ -64,7 +64,7 @@ const SummaryPage = () => {
             const intervalId = setInterval(() => {
                 setSummary(prev => prev + (prev ? ' ' : '') + words[currentIndex]);
                 setCurrentIndex(prevIndex => prevIndex + 1); // Use functional update
-            }, 50);
+            }, 35);
     
             return () => clearInterval(intervalId);
         }
