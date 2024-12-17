@@ -8,7 +8,8 @@ The project was designed to be a web application that runs on Windows.
 The system was implemented with multiple languages like React with Javascript for the front-end, Node.js and Express.js for the back-end.
 
 ## Libraries needed
-The system uses multiple npm packages and dependencies. No specific external libraries need to be installed beyond the ones included in the project setup.
+The system need Node.js in order to run the back-end and install all the npm packages.
+You need to go to `https://nodejs.org/en/download/prebuilt-installer` and download the prebuilt installer first.
 
 ## Steps on how to run the system
 ### 1. Cloning the project
