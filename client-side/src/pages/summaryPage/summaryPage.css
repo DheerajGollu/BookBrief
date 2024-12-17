@@ -20,14 +20,17 @@
     height: 100vh; 
 }
 
-.headerContainer{
+.headerContainer, .homeButton{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.homeButton{
     cursor: pointer;
 }
-.headerContainer:hover p{
+
+.homeButton:hover p{
     color: #229fc5; 
 }
 .mainHeader, .subHeader{

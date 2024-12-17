@@ -18,7 +18,7 @@ const SummaryPage = () => {
 
     
     useEffect(() => {
-        const fetchBookData = async (query) => {
+        const fetchBookData = async (query) => { //fetch the book data from google books api to get the book cover
             try {
                 try {
                     const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=1`);
@@ -33,13 +33,13 @@ const SummaryPage = () => {
         };
 
         const fetchSummary = async () => {
-            try {
+            try { //call the backend endpoint to get the summary of the book by passing title and author
                 const response = await axios.post('/summarizeBook', { title, author });
                setWords(response.data.summary.summary.split(' '));
                setCurrentIndex(0);
-               setSummary(''); 
+               setSummary(''); //clear the spinner
                setLoading(false);
-                let list = response.data.summary.similarBooks;
+                let list = response.data.summary.similarBooks; //
                 let books_list = []
                 books_list = await Promise.all(
                     list.map(async (item) => {
@@ -107,9 +107,11 @@ const SummaryPage = () => {
       
     return (
         <div className="summaryPageContainer">
-            <div className='headerContainer' onClick={handleHomepageClick}>
-              <p className='mainHeader'> Book Brief</p> 
-              <p className='subHeader'>Summary</p> 
+            <div className='headerContainer'>
+                <div className='homeButton' onClick={handleHomepageClick}>
+                <p className='mainHeader'> Book Brief</p> 
+                <p className='subHeader'>Summary</p>
+                </div>
             </div>
 
             <div className='bookInfoContainer'>
