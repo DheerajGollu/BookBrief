@@ -91,9 +91,9 @@ const HomePage = () => {
         </div>
     );
 
-    return (
-        <div className="app">
+    return(
 
+        <div className="app">
             <div className="header">
                 <h1 className="title">Book Brief</h1>
             </div>

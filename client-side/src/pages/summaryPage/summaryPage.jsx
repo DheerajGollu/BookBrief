@@ -39,8 +39,8 @@ const SummaryPage = () => {
                setCurrentIndex(0);
                setSummary(''); //clear the spinner
                setLoading(false);
-                let list = response.data.summary.similarBooks; //
-                let books_list = []
+                let list = response.data.summary.similarBooks; //5 similar books
+                let books_list = [] //clear the list
                 books_list = await Promise.all(
                     list.map(async (item) => {
                       let info = await fetchBookData(item.title);
@@ -57,14 +57,14 @@ const SummaryPage = () => {
         };
 
         fetchSummary();
-    }, [title, author]);
+    }, [title, author]); //this will run only when title and author changes
 
     useEffect(() => { //this is to display the summary word by word 
         if (words.length > 0 && currentIndex < words.length) {
             const intervalId = setInterval(() => {
                 setSummary(prev => prev + (prev ? ' ' : '') + words[currentIndex]);
                 setCurrentIndex(prevIndex => prevIndex + 1); // Use functional update
-            }, 35);
+            }, 35); // 35ms per word
     
             return () => clearInterval(intervalId);
         }
@@ -79,7 +79,7 @@ const SummaryPage = () => {
         setLoading(true);
         setBooks([]);
         setSummary(<Spinner variant="success" animation="border" />);
-        navigate('/summary', { state: bookData });
+        navigate('/summary', { state: bookData }); //navigate to the same page with the new book data
     };
 
     const renderBook = (book) => {

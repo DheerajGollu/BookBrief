@@ -1,6 +1,5 @@
 
 :root {
-
     --text-color: #b1d1cb;
     --title-color: #d0d6d6;
     --div-color: #042630;
@@ -8,47 +7,21 @@
 }
 
 .app {
-
-    /*
-    font-family: "Inter", sans-serif;
-    padding: 10px 20px 20px 20px;
-    color: rgb(237, 254, 255);
-    text-shadow: -1px 0 var(--textShadowColor), 0 2px var(--textShadowColor), 2px 0 var(--textShadowColor), 0 -1px var(--textShadowColor);
-    border: 3px solid white;
-    box-shadow: 0px 0px 10px 5px white;
-    padding: 1%;*/
     font-family: "Inter", sans-serif;
     color: var(--text-color);
     background-color: var(--bg-color);
     overflow-y: auto;
     height: 100vh;
     width: 100%;
-    
 }
 
-/*
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-*/
-
 .header{
-
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
 }
 
 .title {
-
     padding-top: 25px;
     padding-bottom: 5px;
     text-align: center;
@@ -58,7 +31,6 @@
 }
 
 .search-area {
-
     padding-top: 25px;
     display: flex;
     justify-content: center;
@@ -66,76 +38,34 @@
     width: 100%;
 }
 
-
 .search-bar {
-
     display: flex;
     width: fit-content;
     position: relative;
     padding: 1.2em;
     margin-bottom: 20px;
-    background: var(--text-color); /*linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);*/
+    background: var(--text-color); 
     background-size: 400% 400%;
-    /*animation: gradient 5s ease infinite;*/
     border-radius: 60px;
 }
 
 .search-bar input::placeholder {
-
     color: white;
 }
 
-/*
-.search-bar::after, .search-bar::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    padding: 15px;
-    border-radius: inherit;
-    background-image: linear-gradient(var(--angle), yellow, orange, red, rgb(255, 0, 149), purple);
-    animation: spin 4s infinite linear;
-}
-
-.search-bar::before {
-    filter: blur(5rem);
-    opacity: 0.8;
-}
-
-@keyframes spin{
-
-    0%{
-        --angle: 0deg;
-    }
-    100%{
-        --angle: 360deg;
-    }
-}
-
-*/
-
 .search-bar:hover input {
-
-
     width: 400px;
 }
 
 .search-bar:not(:hover) input:not(:placeholder-shown) {   
-    
     width: 400px;
 } 
 
 .search-bar:hover .icon{
-
     rotate: 90deg;
 }
 
 input {
-
     width: 80px;
     font-size: 1.2rem;
     border: none;
@@ -145,24 +75,19 @@ input {
     transition: 0.6s;
 }
 
-
 @property --angle{
-
     syntax: '<angle>';
     initial-value: 0deg;
     inherits: false;
-
 }
 
 .icon {
-
     margin-top: auto;
     margin-bottom: auto;
     color: white;
     font-size: 25px;
     transition: 0.6s;
 }
-
 
 .iconBtn {
     cursor: pointer;
@@ -172,13 +97,10 @@ input {
 }
 
 .iconBtn:hover .icon {
-
     color: rgb(103, 181, 255);
 }
 
-
 img {
-
     border: 1px solid var(--text-color);
     box-shadow: 0px 0px 10px 1px var(--text-color);
     transition: 0.2s;
@@ -194,7 +116,6 @@ img {
 }
 
 .book-card:hover img{
-
     box-shadow: 0px 0px 10px 5px var(--text-color);
 }
 
@@ -220,49 +141,7 @@ img {
     margin-top: 10px;
 }
 
-/*
-.resultsArea {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid white;
-}
-
-.horizontal-scroll p{
-
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.horizontal-scroll {
-
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    width: 85%;
-    min-height: 300px;
-    border: 2px solid black;
-    align-items: center;
-    gap: 10px;
-}
-
-    .horizontal-scroll::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 4px;
-    }
-
-    .horizontal-scroll::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-    }
-*/
-
 .container {
-
     display: flex;
     width: 100%;
     align-items: center;
@@ -270,7 +149,6 @@ img {
     padding-bottom: 25px;
     padding-top: 50px;
 }
-
 
 .inner-container{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
@@ -286,7 +164,6 @@ img {
 
 .books-container {
     display: flex;
-    /* justify-content: space-evenly    ; */
     overflow-x: auto; 
     padding-top: 10px;
     gap: 10px;
@@ -294,10 +171,9 @@ img {
 
 .header-container{
     padding: 10px;
-    /*border-bottom: 1px solid var(--bg-color);
-    */
     margin-bottom: 20px;
 }
+
 .header-container p{
     margin-bottom: 0%;
 }
@@ -308,30 +184,19 @@ img {
     font-weight: 600;
 }
 
-
-
-  .inner-container:hover ::-webkit-scrollbar{
+.inner-container:hover ::-webkit-scrollbar{
     height: 10px;
-  }
+}
 
-  .inner-container ::-webkit-scrollbar{
-
+.inner-container ::-webkit-scrollbar{
     height: 8px;
-  }
+}
 
-  /* Track 
-  .inner-container ::-webkit-scrollbar-track {
-    background: pink;
-    border-radius: 10px;
-  }*/
-  
-  /* Handle */
-  .inner-container ::-webkit-scrollbar-thumb {
+.inner-container ::-webkit-scrollbar-thumb {
     background: white;
     border-radius: 10px;
-  }
+}
   
-  /* Handle on hover */
-  .inner-container ::-webkit-scrollbar-thumb:hover {
+.inner-container ::-webkit-scrollbar-thumb:hover {
     background: var(--text-color);
-  }
+}
