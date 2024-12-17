@@ -20,7 +20,7 @@ const HomePage = () => {
             setSearchResults([]); 
             return;
         }
-    const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/g;
+    const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/g; // Pattern to check for special characters
     if (specialCharPattern.test(query)) {
         setSearchResults([]);
         alert("Search query contains special characters!!!");
@@ -28,7 +28,7 @@ const HomePage = () => {
         return;
     }
         setLoading(true);
-        try {
+        try { // Fetch 10 search results 
             const response = await axios.get(`${GOOGLE_BOOKS_API_BASE_URL}?q=${query}&maxResults=10`);
             setSearchResults(response.data.items || []); // Set search results
         } catch (error) {
@@ -48,8 +48,7 @@ const HomePage = () => {
         }
     };
 
-    // Fetch discovery queue on component mount
-    useEffect(() => {
+    useEffect(() => {// Fetch discovery queue on component mount
         fetchDiscoveryQueue();
     }, []);
 
@@ -63,17 +62,16 @@ const HomePage = () => {
         }
     };
 
-    const handleBookClick = (book) => {
+    const handleBookClick = (book) => { 
         const bookData = {
             title: book.volumeInfo.title,
             author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
             bookImage: book.volumeInfo.imageLinks?.thumbnail || 'No Image Available'
         };
-
         navigate('/summary', { state: bookData });
     };
     
-    const renderBookCard = (book) => (
+    const renderBookCard = (book) => ( //render book div
         <div key={book.id} className="book-card" onClick={() => handleBookClick(book)}>
             {book.volumeInfo.imageLinks?.thumbnail ? (
                 <img
@@ -92,12 +90,10 @@ const HomePage = () => {
     );
 
     return(
-
         <div className="app">
             <div className="header">
                 <h1 className="title">Book Brief</h1>
             </div>
-
             <div className="search-area">
                 <div className="search-bar">
                     <input
@@ -138,7 +134,6 @@ const HomePage = () => {
                     <div className='header-container'>
                         <p className='header-text'>
                             Discovery Queue
-            
                             <button className="iconBtn" onClick={fetchDiscoveryQueue}> 
                                 <FontAwesomeIcon className="icon" icon={faShuffle} />
                             </button>
@@ -149,7 +144,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };
